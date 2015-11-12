@@ -1,6 +1,5 @@
 #include "DSHA_sha3.h"
 
-#define COMPUTE 1 //zrusit
 #define ROT 1
 #define XOR 1
 #define G 1 //G
@@ -159,9 +158,17 @@ for(i=0;i<16;i++) {
 		hv[4*i+2]=((dshaState.hashval)[i] >> 8) & 0xff ;
 		hv[4*i+3]=(dshaState.hashval)[i] & 0xff ;			
 }
+}else{
+    for(i=0;i<16;i++) {
+            hv[4*i]=(dshaState.hashval)[i];
+            hv[4*i+1]=(dshaState.hashval)[i];
+            hv[4*i+2]=(dshaState.hashval)[i] ;
+            hv[4*i+3]=(dshaState.hashval)[i] ;
+}
+}
 t=dshaState.blocksize/16;
 for(i=0;i<t;i++) hashval[i]=hv[i];
-}
+
 return HReturn;
 } 
 
@@ -337,12 +344,12 @@ for ( i=0; i<3; i++ )
 //15-th round
 	}
 }
-if(COMPUTE == 1){ //FEEDFORWARD - add ch to final hash value
+
 // Compute intermediate hash value
 for ( i=0;i<8;i++){
     hash_32[i] +=ch[i];
 	dshaState.hashval[i]=hash_32[i];
-}}
+}
 return SUCCESS;
 }
 
@@ -557,13 +564,13 @@ for ( i=0; i<3; i++ )   {
 	}
 }
 
-if(COMPUTE == 1){
+
 // Compute intermediate hash value - COMP
 for (i=0;i<8;i++){
     hash_64[i] +=ch[i];	
 	(dshaState.hashval)[2*i]=hash_64[i] >> 32 ;
 	(dshaState.hashval)[2*i+1]=hash_64[i] & 0xffffffff;
-}}
+}
 return SUCCESS;
 }
 
